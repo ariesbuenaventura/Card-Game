@@ -1,0 +1,301 @@
+Function GetRevAni(Effect, TypeEffect)
+     AniType = -1
+
+     Select Case Effect
+     Case 0  ' None
+     Case 1  ' Elevator
+          Select Case TypeEffect
+          Case 0 ' Down
+               AniType = &H0D ' Up
+          Case 1 ' Left
+               AniType = &H0C ' Right
+          Case 2 ' Right
+               AniType = &H0B ' Left 
+          Case 3 ' Up
+               AniType = &H0A ' Down
+          End Select
+     Case 2  ' Flip
+          Select Case TypeEffect
+          Case 0 ' Bottom
+               AniType = &H18 ' Top
+          Case 1 ' Horizontal 
+               AniType = &H15 ' Horizontal
+          Case 2 ' Left
+               AniType = &H17 ' Right
+          Case 3 ' Right
+               AniType = &H16 ' Left
+          Case 4 ' Top
+               AniType = &H14 ' Bottom
+          Case 5 ' Vertical
+               AniType = &H19 ' Vertical
+          End Select     
+     Case 3  ' Fly In
+          Select Case TypeEffect
+          Case 0 ' Bottom
+               AniType = &H28 ' Top
+          Case 1 ' Bottom-Left 
+               AniType = &H29 ' (FlyOut) Bottom-Left
+          Case 2 ' Bottom-Right
+               AniType = &H2A ' (FlyOut) Bottom-Right
+          Case 3 ' Left
+               AniType = &H2B ' Right
+          Case 4 ' Right
+               AniType = &H2C ' Left
+          Case 5 ' Top
+               AniType = &H2D ' Bottom
+          Case 6 ' Top-Left
+               AniType = &H2E ' (FlyOut) Top-Left
+          Case 7 ' Top-Right
+               AniType = &H2F ' (FlyOut) Top-Right
+          End Select        
+     Case 4  ' Fly Out
+          Select Case TypeEffect
+          Case 0 ' Bottom
+               AniType = &H1E ' Top
+          Case 1 ' Bottom-Left 
+               AniType = &H1F ' (FlyIn) Bottom-Left
+          Case 2 ' Bottom-Right
+               AniType = &H20 ' (FlyIn) Bottom-Right
+          Case 3 ' Left
+               AniType = &H21 ' Right
+          Case 4 ' Right
+               AniType = &H22 ' Left
+          Case 5 ' Top
+               AniType = &H23 ' Bottom
+          Case 6 ' Top-Left
+               AniType = &H24 ' (FlyIn) Top-Left
+          Case 7 ' Top-Right
+               AniType = &H25 ' (FlyIn) Top-Right
+          End Select        
+     Case 5  ' Gate
+          Select Case TypeEffect
+          Case 0 ' Horizontal-In
+               AniType = &H33 ' Horizontal-Out
+          Case 1 ' Horizontal-Out
+               AniType = &H32 ' Horizontal-In
+          Case 2 ' Vertical-In
+               AniType = &H35 ' Vertical-Out
+          Case 3 ' Vertical-Out 
+               AniType = &H34 ' Vertical-In
+          End Select 
+     Case 6  ' Split
+          Select Case TypeEffect
+          Case 0 ' Horizontal-In
+               AniType = &H3D ' Horizontal-Out
+          Case 1 ' Horizontal-Out
+               AniType = &H3C ' Horizontal-In
+          Case 2 ' Vertical-In
+               AniType = &H3F ' Vertical-Out
+          Case 3 ' Vertical-Out 
+               AniType = &H3E ' Vertical-In
+          End Select 
+     Case 7  ' Stretch
+          Select Case TypeEffect
+          Case 0 ' Across
+               AniType = &H46 ' Across
+          Case 1 ' From-Bottom
+               AniType = &H4A ' From-Top
+          Case 2 ' From-Left
+               AniType = &H49 ' From-Right
+          Case 3 ' From-Right
+               AniType = &H48 ' From-Left
+          Case 4 ' From-Top
+               AniType = &H47 ' From-Bottom 
+          End Select
+     Case 8  ' ThreeD
+          Select Case TypeEffect
+          Case 0 ' From-Bottom
+               AniType = &H53 ' From-Top
+          Case 1 ' From-Left
+               AniType = &H52 ' From-Right
+          Case 2 ' From-Right
+               AniType = &H51 ' From-Left
+          Case 3 ' From-Top
+               AniType = &H50 ' From-Bottom
+          End Select
+     Case 9  ' Wipe
+          Select Case TypeEffect
+          Case 0 ' Bottom
+               AniType = &H5D ' Top
+          Case 1 ' Left
+               AniType = &H5C ' Right
+          Case 2 ' Right
+               AniType = &H5B ' Left
+          Case 3 ' Top
+               AniType = &H5A ' Bottom
+          End Select
+     Case 10 ' Zoom   
+          Select Case TypeEffect
+          Case 0 ' In
+               AniType = &H65 ' Out
+          Case 1 ' Out
+               AniType = &H64 ' In
+          End Select
+     End Select
+ 
+     GetRevAni = AniType
+End Function
+
+Function GetTypeEffect(thisCard)
+     GetTypeEffect = 0
+
+     Select Case thisCard.Effect
+     Case 0  ' None
+     Case 1  ' Elevator
+          GetTypeEffect = thisCard.Elevator
+     Case 2  ' Flip
+          GetTypeEffect = thisCard.Flip
+     Case 3  ' FlyIn
+          GetTypeEffect = thisCard.FlyIn
+     Case 4  ' FlyOut
+          GetTypeEffect = thisCard.FlyOut
+     Case 5  ' Gate 
+          GetTypeEffect = thisCard.Gate     
+     Case 6  ' Split
+          GetTypeEffect = thisCard.Split
+     Case 7  ' Stretch
+          GetTypeEffect = thisCard.Stretch
+     Case 8  ' ThreeD
+          GetTypeEffect = thisCard.ThreeD
+     Case 9  ' Wipe
+          GetTypeEffect = thisCard.Wipe
+     Case 10 ' Zoom
+          GetTypeEffect = thisCard.Zoom    
+     End Select
+End Function
+
+Function IsCardAniOn(thisCard)
+     IsCardAniOn = False 
+
+     For Each oCard In thisCard
+          If TypeName(oCard) = "Card" Then
+               If oCard.StopAni = False Then
+                    IsCardAniOn = True
+                    Exit Function
+               End If
+          End If 
+     Next
+End Function
+
+Function IsCardAniOnEx(thisForm)
+     IsCardAniOnEx = False 
+
+     For Each oCard In thisForm.Controls
+          If TypeName(oCard) = "Card" Then
+               If oCard.StopAni = False Then
+                    IsCardAniOnEx = True
+                    Exit Function
+               End If                
+          End If
+     Next 
+End Function
+
+Function GetTotalCardsLeft(MatchData)
+     HowManyCardsLeft = 0
+     For Each oCard In crdPlayingCard
+          If oCard.Index <> 0 Then
+               If oCard.Data = MatchData Then
+                    ' count how many cards left
+                    HowManyCardsLeft = HowManyCardsLeft + 1
+               End If
+           End If 
+     Next   
+
+     GetTotalCardsLeft = HowManyCardsLeft
+End Function
+
+Sub FlipCard(thisCard, FaceOp, MatchData)
+     Set TempColl = Nothing
+     For Each oCard In thisCard
+          If TypeName(oCard) = "Card" Then
+               If Trim(MatchData) = Trim(oCard.Data) Then
+                    If oCard.Face <> FaceOp Then
+                         If oCard.Effect = 0 Then
+                              oCard.Face = FaceOp
+                         Else	
+			           ' set effect
+          			     SetRevAni oCard, GetRevAni(oCard.Effect, _
+                                                        GetTypeEffect(oCard)) 
+                             TempColl.Add oCard
+                             oCard.PlayAni
+		             End If	
+                     End If
+               End If 
+          End If
+     Next
+
+     Do While IsCardAniOnEx(frmMain)
+          Call gm_DoEvents
+     Loop
+
+     For Each oCard In TempColl
+          If oCard.Effect <> 0 Then
+               SetRevAni oCard, GetRevAni(oCard.Effect, _
+                                          GetTypeEffect(oCard))
+          End If
+     Next
+    Set TempColl = Nothing
+End Sub
+
+Sub LockForm(bVal)
+     frmMain.Enabled = Not bVal
+End Sub
+
+Sub SetRevAni(thisCard, RevEffect)
+     If thisCard.Effect = 0 Then Exit Sub
+
+     If RevEffect <> -1 Then
+          Effect     = Int(RevEffect / 10)
+          TypeEffect = RevEffect Mod 10
+
+          thisCard.Effect = Effect
+
+          Select Case Effect
+          Case 1  ' Elevator
+               thisCard.Elevator = TypeEffect
+          Case 2  ' Flip
+               thisCard.Flip = TypeEffect
+          Case 3  ' FlyIn
+               thisCard.FlyIn = TypeEffect
+          Case 4  ' FlyOut
+               thisCard.FlyOut = TypeEffect
+          Case 5  ' Gate
+               thisCard.Gate = TypeEffect
+          Case 6  ' Split
+               thisCard.Split = TypeEffect
+          Case 7  ' Stretch
+               thisCard.Stretch = TypeEffect
+          Case 8  ' ThreeD
+               thisCard.ThreeD = TypeEffect
+          Case 9  ' Wipe
+               thisCard.Wipe = TypeEffect
+          Case 10 ' Zoom
+               thisCard.Zoom = TypeEffect  
+          End Select
+     End If
+End Sub
+
+Sub SetTypeEffect(thisCard, TypeEffect)
+     Select Case thisCard.Effect
+     Case 1  ' Elevator
+          thisCard.Elevator = TypeEffect
+     Case 2  ' Flip
+          thisCard.Flip = TypeEffect
+     Case 3  ' FlyIn
+          thisCard.FlyIn = TypeEffect
+     Case 4  ' FlyOut
+          thisCard.FlyOut = TypeEffect
+     Case 5  ' Gate
+          thisCard.Gate = TypeEffect
+     Case 6  ' Split
+          thisCard.Split = TypeEffect
+     Case 7  ' Stretch
+          thisCard.Stretch = TypeEffect
+     Case 8  ' ThreeD
+          thisCard.ThreeD = TypeEffect
+     Case 9  ' Wipe
+          thisCard.Wipe = TypeEffect
+     Case 10 ' Zoom
+          thisCard.Zoom = TypeEffect  
+     End Select
+End Sub
