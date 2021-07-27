@@ -4,5 +4,5 @@
  This program has two games, each game stored in a file. To play the game just open the file
 </p>
 <div align="center">
-  <img src="PIC200482137569784.JPG">
+  <img src="cardgame.jpg">
 </div>
